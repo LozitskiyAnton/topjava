@@ -35,13 +35,16 @@ public class UserMealsUtil {
 
         // считаем кол-во каллорий в переданом и отсортированном списке еды, и записываем в map, ключ - дата, value - каллории
         for (UserMeal userMeal : meals) {
-            if (map.containsKey(userMeal.getDateTime().toLocalDate())) {
-                count += userMeal.getCalories();
-                map.put(userMeal.getDateTime().toLocalDate(), count);
-            } else {
-                map.put(userMeal.getDateTime().toLocalDate(), userMeal.getCalories());
-                count= userMeal.getCalories();
-            }
+
+            map.merge(userMeal.getDateTime().toLocalDate(),userMeal.getCalories(), Integer::sum);
+
+//            if (map.containsKey(userMeal.getDateTime().toLocalDate())) {
+//                count += userMeal.getCalories();
+//                map.put(userMeal.getDateTime().toLocalDate(), count);
+//            } else {
+//                map.put(userMeal.getDateTime().toLocalDate(), userMeal.getCalories());
+//                count= userMeal.getCalories();
+//            }
         }
 
         // добавляем в лист только ту еду которая подходит по времени, и добавляем метку превышения каллорий из map сравнивая дату.
