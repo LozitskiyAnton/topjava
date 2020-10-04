@@ -9,11 +9,16 @@
 <h2>Meals</h2>
 
 <div>
-    <table border =1>
+    <h3><a href="index.html">Home</a></h3>
+    <br>
+    <h3><a href="meals?action=insert">add Meal</a></h3>
+    <table border=1>
         <tr>
             <th>dateTime</th>
             <th>description</th>
             <th>calories</th>
+            <th>update</th>
+            <th>delete</th>
         </tr>
         <c:forEach items="${mealTo}" var="meal">
             <tr style="color:${meal.excess ? 'green' : 'red'}">
@@ -23,11 +28,13 @@
                 </td>
                 <td>${meal.description}</td>
                 <td>${meal.calories}</td>
+                <td><a href="meals?action=edit&mealId=<c:out value="${meal.getId()}"/>">Update</a></td>
+                <td><a href="meals?action=delete&mealId=<c:out value="${meal.getId()}"/>">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
 
 </div>
-<h3><a href="index.html">Home</a></h3>
+
 </body>
 </html>
