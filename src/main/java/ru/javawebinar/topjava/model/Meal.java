@@ -1,14 +1,11 @@
 package ru.javawebinar.topjava.model;
 
-import ru.javawebinar.topjava.util.GeneratorId;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 public class Meal {
-
-    private final int Id;
+    private final int id;
 
     private final LocalDateTime dateTime;
 
@@ -16,14 +13,16 @@ public class Meal {
 
     private final int calories;
 
-    public Meal(LocalDateTime dateTime, String description, int calories) {
+    public Meal(LocalDateTime dateTime, String description, int calories, int id) {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
-        this.Id = GeneratorId.nextId();
+        this.id = id;
     }
 
-    public int getId() { return Id; }
+    public int getId() {
+        return id;
+    }
 
     public LocalDateTime getDateTime() {
         return dateTime;
@@ -48,10 +47,10 @@ public class Meal {
     @Override
     public String toString() {
         return "Meal{" +
-                "dateTime=" + dateTime +
+                "id=" + id +
+                ", dateTime=" + dateTime +
                 ", description='" + description + '\'' +
                 ", calories=" + calories +
-                ", id=" + Id +
                 '}';
     }
 }
