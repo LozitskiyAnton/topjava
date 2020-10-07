@@ -1,5 +1,6 @@
 package ru.javawebinar.topjava.web;
 
+import org.slf4j.Logger;
 import ru.javawebinar.topjava.dao.CrudDao;
 import ru.javawebinar.topjava.dao.InMemoryMealDao;
 import ru.javawebinar.topjava.model.Meal;
@@ -15,8 +16,11 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+import static org.slf4j.LoggerFactory.getLogger;
+
 public class MealServlet extends HttpServlet {
-    public static final Integer CALORIES_PER_DAY = 2000;
+    private static final Logger log = getLogger(MealServlet.class);
+    public static final int CALORIES_PER_DAY = 2000;
     private CrudDao<Meal> dao;
 
     @Override
@@ -33,6 +37,7 @@ public class MealServlet extends HttpServlet {
         switch (action) {
             case "delete": {
                 dao.delete(parseId(request));
+                log.debug("redirect to meals");
                 response.sendRedirect("meals");
                 return;
             }
@@ -52,30 +57,29 @@ public class MealServlet extends HttpServlet {
                 view = "/meals.jsp";
             }
         }
+        log.debug("forward to " + view);
         request.getRequestDispatcher(view).forward(request, response);
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        String mealId = request.getParameter("mealId");
-        Meal meal = new Meal(LocalDateTime.parse(request.getParameter("dateTime")),
+        int mealId = parseId(request);
+        Meal meal = new Meal(mealId, LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("description"),
-                Integer.parseInt(request.getParameter("calories")), parseId(request));
-        if (mealId == null || mealId.isEmpty()) {
+                Integer.parseInt(request.getParameter("calories")));
+        if (mealId == 0) {
+            log.debug("create new meal");
             dao.create(meal);
         } else {
+            log.debug("update meal with id: " + mealId);
             dao.update(meal);
         }
+        log.debug("redirect to meals");
         response.sendRedirect("meals");
     }
 
     private static int parseId(HttpServletRequest request) {
         String mealId = request.getParameter("mealId");
-        if (mealId.isEmpty())  {
-            return 0;
-        }
-        else {
-            return Integer.parseInt(mealId);
-        }
+        return (mealId == null || mealId.isEmpty() ? 0 : Integer.parseInt(mealId));
     }
 }
