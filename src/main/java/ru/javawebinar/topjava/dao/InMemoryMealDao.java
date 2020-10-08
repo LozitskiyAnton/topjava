@@ -42,7 +42,7 @@ public class InMemoryMealDao implements CrudDao<Meal> {
 
     @Override
     public Meal update(Meal meal) {
-        return storage.replace(meal.getId(), meal)==null ? null : meal ;
+        return storage.replace(meal.getId(), meal) == null ? null : meal;
     }
 
     @Override

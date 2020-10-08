@@ -32,7 +32,7 @@ public class MealServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String view = "";
         String action = request.getParameter("action");
-        action = (action == null) ? "" : action ;
+        action = (action == null) ? "" : action;
 
         switch (action) {
             case "delete": {
@@ -57,7 +57,7 @@ public class MealServlet extends HttpServlet {
                 view = "/meals.jsp";
             }
         }
-        log.debug("forward to " + view);
+        log.debug("forward to {}", view);
         request.getRequestDispatcher(view).forward(request, response);
     }
 
@@ -71,7 +71,7 @@ public class MealServlet extends HttpServlet {
             log.debug("create new meal");
             dao.create(meal);
         } else {
-            log.debug("update meal with id: " + mealId);
+            log.debug("update meal with id: {}", mealId);
             dao.update(meal);
         }
         log.debug("redirect to meals");
