@@ -34,12 +34,12 @@ public class MealRestController {
     }
 
     public Meal get(int id) {
-        log.info("get {}", id);
+        log.info("get with id: {}", id);
         return service.get(SecurityUtil.authUserId(), id);
     }
 
     public boolean delete(int id) {
-        log.info("delete {}", id);
+        log.info("delete with id: {}", id);
         return service.delete(SecurityUtil.authUserId(), id);
     }
 

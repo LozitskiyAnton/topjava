@@ -24,7 +24,7 @@ public class InMemoryMealRepository implements MealRepository {
     private final AtomicInteger counter = new AtomicInteger(0);
 
     {
-        for (Meal meal: MealsUtil.meals){
+        for (Meal meal : MealsUtil.meals) {
             meal.setId(counter.incrementAndGet());
             repository.put(meal.getId(), meal);
         }
@@ -32,13 +32,15 @@ public class InMemoryMealRepository implements MealRepository {
 
     @Override
     public Meal save(int authUserId, Meal meal) {
-        log.info("save {}", meal);
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
+            meal.setUserId(authUserId);
+            log.info("create {}", meal);
             repository.put(meal.getId(), meal);
             return meal;
         }
         if (checkId(meal.getId(), authUserId)) {
+            log.info("update {}", meal);
             repository.replace(meal.getId(), meal);
             return meal;
         } else {
@@ -49,7 +51,6 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public boolean delete(int authUserId, int id) {
         log.info("delete {}", id);
-
         if (checkId(id, authUserId)) {
             return repository.remove(id) != null;
         } else {
@@ -89,7 +90,5 @@ public class InMemoryMealRepository implements MealRepository {
     private boolean checkId(int id, int authUserId) {
         return repository.containsKey(id) && authUserId == repository.get(id).getUserId();
     }
-
-
 }
 

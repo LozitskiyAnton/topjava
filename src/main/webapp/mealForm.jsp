@@ -32,19 +32,21 @@
     <form method="post" action="meals">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
-            <dt>DateTime:</dt>
-            <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime" required></dd>
-        </dl>
-        <dl>
-            <dt>Description:</dt>
-            <dd><input type="text" value="${meal.description}" size=40 name="description" required></dd>
-        </dl>
-        <dl>
-            <dt>Calories:</dt>
-            <dd><input type="number" value="${meal.calories}" name="calories" required></dd>
-        </dl>
-        <button type="submit">Save</button>
-        <button onclick="window.history.back()" type="button">Cancel</button>
+            <input type="hidden" name="userId" value="${meal.userId}">
+            <dl>
+                <dt>DateTime:</dt>
+                <dd><input type="datetime-local" value="${meal.dateTime}" name="dateTime" required></dd>
+            </dl>
+            <dl>
+                <dt>Description:</dt>
+                <dd><input type="text" value="${meal.description}" size=40 name="description" required></dd>
+            </dl>
+            <dl>
+                <dt>Calories:</dt>
+                <dd><input type="number" value="${meal.calories}" name="calories" required></dd>
+            </dl>
+            <button type="submit">Save</button>
+            <button onclick="window.history.back()" type="button">Cancel</button>
     </form>
 </section>
 </body>
