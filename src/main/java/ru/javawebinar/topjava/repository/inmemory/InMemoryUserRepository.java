@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryUserRepository implements UserRepository {
@@ -33,12 +34,7 @@ public class InMemoryUserRepository implements UserRepository {
             repository.put(user.getId(), user);
             return user;
         }
-        if (repository.containsKey(user.getId())) {
-            repository.replace(user.getId(), user);
-            return user;
-        } else {
-            return null;
-        }
+        return repository.replace(user.getId(), user)==null ? null : user;
     }
 
     @Override
@@ -50,14 +46,17 @@ public class InMemoryUserRepository implements UserRepository {
     @Override
     public List<User> getAll() {
         log.info("getAll");
-        List<User> users = new ArrayList<>(repository.values());
-        users.sort(Comparator.comparing(User::getName).thenComparing(User::getEmail));
-        return users;
+        return repository.values().stream()
+                .sorted(Comparator.comparing(User::getName).thenComparing(User::getEmail))
+                .collect(Collectors.toList());
     }
 
     @Override
     public User getByEmail(String email) {
         log.info("getByEmail {}", email);
-        return getAll().stream().filter(user1 -> user1.getEmail().equals(email)).findFirst().orElse(null);
+        return repository.values().stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst()
+                .orElse(null);
     }
 }
