@@ -7,7 +7,5 @@
 <h3><a href="index.html">Home</a></h3>
 <hr>
 <h2>Users</h2>
-<hr>
-<h2>Выбран юзер с ID: ${userId}</h2>
 </body>
 </html>

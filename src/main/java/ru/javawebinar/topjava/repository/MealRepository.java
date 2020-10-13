@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface MealRepository {
     // null if not found, when updated
-    Meal save(int authUserId, Meal meal);
+    Meal save(int userId, Meal meal);
 
     // false if not found
-    boolean delete(int authUserId, int id);
+    boolean delete(int userId, int id);
 
     // null if not found
-    Meal get(int authUserId, int id);
+    Meal get(int userId, int id);
 
-    List<Meal> getAll(int authUserId);
+    List<Meal> getAll(int userId);
 
-    List<Meal> getAll(int authUserId, LocalDate startDate, LocalDate endDate);
+    List<Meal> getFilteredAll(int userId, LocalDate startDate, LocalDate endDate);
 }

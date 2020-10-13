@@ -24,14 +24,14 @@ public class MealService {
         this.repository = repository;
     }
 
-    public List<MealTo> getAll(int authUserId) {
+    public List<MealTo> getAll(int authUserId, int authUserCaloriesPerDay) {
         List<Meal> meals = repository.getAll(authUserId);
-        return getTos(meals, SecurityUtil.authUserCaloriesPerDay());
+        return getTos(meals, authUserCaloriesPerDay);
     }
 
-    public List<MealTo> getFilteredAll(int authUserId, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
-        List<Meal> meals = repository.getAll(authUserId, startDate, endDate);
-        return getFilteredTos(meals, SecurityUtil.authUserCaloriesPerDay(), startTime, endTime);
+    public List<MealTo> getFilteredAll(int authUserId, int authUserCaloriesPerDay, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime) {
+        List<Meal> meals = repository.getFilteredAll(authUserId, startDate, endDate);
+        return getFilteredTos(meals, authUserCaloriesPerDay, startTime, endTime);
     }
 
     public Meal get(int authUserId, int id) {
@@ -48,6 +48,6 @@ public class MealService {
     }
 
     public Meal create(int authUserId, Meal meal) {
-        return checkNotFound(repository.save(authUserId, meal), "userId: " + authUserId);
+        return repository.save(authUserId, meal);
     }
 }

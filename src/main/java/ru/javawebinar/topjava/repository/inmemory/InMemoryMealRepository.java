@@ -25,8 +25,7 @@ public class InMemoryMealRepository implements MealRepository {
 
     {
         for (Meal meal : MealsUtil.meals) {
-            meal.setId(counter.incrementAndGet());
-            repository.put(meal.getId(), meal);
+            save(meal.getUserId(), meal);
         }
     }
 
@@ -39,36 +38,31 @@ public class InMemoryMealRepository implements MealRepository {
             repository.put(meal.getId(), meal);
             return meal;
         }
-        if (checkId(meal.getId(), authUserId)) {
-            log.info("update {}", meal);
-            repository.replace(meal.getId(), meal);
+
+        log.info("update {}", meal);
+        Meal repMeal = repository.get(meal.getId());
+        return repMeal != null && repMeal.getUserId() == authUserId ? repository.computeIfPresent(meal.getId(), (id, oldMeal) -> {
+            meal.setUserId(authUserId);
             return meal;
-        } else {
-            return null;
-        }
+        }) : null;
     }
 
     @Override
     public boolean delete(int authUserId, int id) {
         log.info("delete {}", id);
-        if (checkId(id, authUserId)) {
-            return repository.remove(id) != null;
-        } else {
-            return false;
-        }
+        Meal meal = repository.get(id);
+        return (meal != null && meal.getUserId() == authUserId) && repository.remove(id) != null;
     }
 
     @Override
     public Meal get(int authUserId, int id) {
         log.info("get {}", id);
-        if (checkId(id, authUserId)) {
-            return repository.get(id);
-        }
-        return null;
+        Meal meal = repository.get(id);
+        return meal != null && meal.getUserId() == authUserId ? meal : null;
     }
 
     @Override
-    public List<Meal> getAll(int authUserId, LocalDate startDate, LocalDate endDate) {
+    public List<Meal> getFilteredAll(int authUserId, LocalDate startDate, LocalDate endDate) {
         log.info("getAll with date");
         return filterByPredicate(authUserId, meal -> DateTimeUtil.isBetweenDate(meal.getDate(), startDate, endDate));
     }
@@ -83,12 +77,8 @@ public class InMemoryMealRepository implements MealRepository {
         return repository.values().stream()
                 .filter(meal -> (meal.getUserId() == authUserId))
                 .filter(filter)
-                .sorted(Comparator.comparing(Meal::getDate).reversed().thenComparing(Meal::getTime).reversed())
+                .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
-    }
-
-    private boolean checkId(int id, int authUserId) {
-        return repository.containsKey(id) && authUserId == repository.get(id).getUserId();
     }
 }
 
