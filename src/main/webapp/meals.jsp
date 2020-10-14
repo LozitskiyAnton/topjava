@@ -2,7 +2,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://topjava.javawebinar.ru/functions" %>
-<%--<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>--%>
 <html>
 <head>
     <title>Meal list</title>
@@ -15,6 +14,7 @@
             color: red;
         }
     </style>
+
 </head>
 <body>
 <section>
@@ -22,21 +22,31 @@
     <hr/>
     <h2>Meals</h2>
 
-    <form method="get" action="meals">
+
+    <form method="get" action="meals" name="filter" id="filter">
+
+        <script type="text/javascript">
+            function clear() {
+                document.getElementById("startDate").value = "";
+                document.getElementById("endDate").value = "";
+                document.getElementById("startTime").value = "";
+                document.getElementById("endTime").value = "";
+            }
+        </script>
 
         <input type="hidden" name="action" value="filter">
         <label for="startDate">Start Date</label>
-        <input type="date" name="startDate" id="startDate">
+        <input type="date" name="startDate" value="${param.startDate}" id="startDate">
         <label for="endDate">End Date</label>
-        <input type="date" name="endDate" id="endDate">
+        <input type="date" name="endDate" value="${param.endDate}" id="endDate">
         <br>
         <label for="startTime">Start Time</label>
-        <input type="time" name="startTime" id="startTime">
+        <input type="time" name="startTime" value="${param.startTime}" id="startTime">
         <label for="endTime">End Time</label>
-        <input type="time" name="endTime" id="endTime">
+        <input type="time" name="endTime" value="${param.endTime}" id="endTime">
         <br><br>
         <button type="submit">Filter</button>
-        <button type="reset">Clear</button>
+        <button type="button" onclick="clear()">Clear</button>
     </form>
 
     <br>

@@ -30,52 +30,50 @@ public class InMemoryMealRepository implements MealRepository {
     }
 
     @Override
-    public Meal save(int authUserId, Meal meal) {
+    public Meal save(int userId, Meal meal) {
         if (meal.isNew()) {
             meal.setId(counter.incrementAndGet());
-            meal.setUserId(authUserId);
+            meal.setUserId(userId);
             log.info("create {}", meal);
             repository.put(meal.getId(), meal);
             return meal;
         }
 
         log.info("update {}", meal);
-        Meal repMeal = repository.get(meal.getId());
-        return repMeal != null && repMeal.getUserId() == authUserId ? repository.computeIfPresent(meal.getId(), (id, oldMeal) -> {
-            meal.setUserId(authUserId);
+        return get(userId, meal.getId()) != null ? repository.computeIfPresent(meal.getId(), (id, oldMeal) -> {
+            meal.setUserId(userId);
             return meal;
         }) : null;
     }
 
     @Override
-    public boolean delete(int authUserId, int id) {
+    public boolean delete(int userId, int id) {
         log.info("delete {}", id);
-        Meal meal = repository.get(id);
-        return (meal != null && meal.getUserId() == authUserId) && repository.remove(id) != null;
+        return get(userId, id) != null && repository.remove(id) != null;
     }
 
     @Override
-    public Meal get(int authUserId, int id) {
+    public Meal get(int userId, int id) {
         log.info("get {}", id);
         Meal meal = repository.get(id);
-        return meal != null && meal.getUserId() == authUserId ? meal : null;
+        return meal != null && meal.getUserId() == userId ? meal : null;
     }
 
     @Override
-    public List<Meal> getFilteredAll(int authUserId, LocalDate startDate, LocalDate endDate) {
+    public List<Meal> getFilteredAll(int userId, LocalDate startDate, LocalDate endDate) {
         log.info("getAll with date");
-        return filterByPredicate(authUserId, meal -> DateTimeUtil.isBetweenDate(meal.getDate(), startDate, endDate));
+        return filterByPredicate(userId, meal -> DateTimeUtil.isBetweenDate(meal.getDate(), startDate, endDate));
     }
 
     @Override
-    public List<Meal> getAll(int authUserId) {
+    public List<Meal> getAll(int userId) {
         log.info("getAll");
-        return filterByPredicate(authUserId, meal -> true);
+        return filterByPredicate(userId, meal -> true);
     }
 
-    public List<Meal> filterByPredicate(int authUserId, Predicate<Meal> filter) {
+    private List<Meal> filterByPredicate(int userId, Predicate<Meal> filter) {
         return repository.values().stream()
-                .filter(meal -> (meal.getUserId() == authUserId))
+                .filter(meal -> (meal.getUserId() == userId))
                 .filter(filter)
                 .sorted(Comparator.comparing(Meal::getDateTime).reversed())
                 .collect(Collectors.toList());
