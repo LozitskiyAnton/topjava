@@ -26,7 +26,7 @@
     <form method="get" action="meals" name="filter" id="filter">
 
         <script type="text/javascript">
-            function clear() {
+            function clearForm() {
                 document.getElementById("startDate").value = "";
                 document.getElementById("endDate").value = "";
                 document.getElementById("startTime").value = "";
@@ -46,7 +46,7 @@
         <input type="time" name="endTime" value="${param.endTime}" id="endTime">
         <br><br>
         <button type="submit">Filter</button>
-        <button type="button" onclick="clear()">Clear</button>
+        <button type="button" onclick="clearForm()">Clear</button>
     </form>
 
     <br>
