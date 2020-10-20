@@ -30,8 +30,6 @@ CREATE TABLE meals
 
 CREATE UNIQUE INDEX users_unique_email_idx ON users (email);
 
-CREATE UNIQUE INDEX meals_unique_date_time_idx ON meals (date_time);
-
 CREATE TABLE user_roles
 (
   user_id INTEGER NOT NULL,
