@@ -21,6 +21,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertThrows;
 import static ru.javawebinar.topjava.MealTestData.*;
@@ -36,6 +37,14 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
 public class MealServiceTest {
     private static final Logger log = LoggerFactory.getLogger(MealServiceTest.class);
     private static final List<String> messages = new ArrayList<>();
+
+    @Rule
+    public final Stopwatch stopwatch = new Stopwatch() {
+        protected void finished(long nanos, Description description) {
+            messages.add(String.format("Тест %1$-25s выполнялся %2$-7d миллисекунд", description.getMethodName(),TimeUnit.NANOSECONDS.toMicros(nanos)));
+            log.info("{} finished, time taken {} ms", description.getMethodName(), TimeUnit.NANOSECONDS.toMicros(nanos));
+        }
+    };
 
     @Autowired
     private MealService service;
@@ -118,18 +127,10 @@ public class MealServiceTest {
         MEAL_MATCHER.assertMatch(service.getBetweenInclusive(null, null, USER_ID), meals);
     }
 
-    @Rule
-    public final Stopwatch stopwatch = new Stopwatch() {
-        protected void finished(long nanos, Description description) {
-            messages.add(description.getMethodName() + "time taken " + nanos);
-            log.info("{} finished, time taken {}", description.getMethodName(), nanos);
-        }
-    };
-
     @AfterClass
     public static void afterClass() {
         for (String message : messages) {
-            System.out.println(message);
+            System.out.println("\u001B[31m" + message + "\u001B[0m");
         }
     }
 }
