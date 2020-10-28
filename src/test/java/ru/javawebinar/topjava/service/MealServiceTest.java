@@ -14,6 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
 import org.springframework.test.context.junit4.SpringRunner;
+import ru.javawebinar.topjava.MealTestData;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -41,8 +42,8 @@ public class MealServiceTest {
     @Rule
     public final Stopwatch stopwatch = new Stopwatch() {
         protected void finished(long nanos, Description description) {
-            messages.add(String.format("Тест %1$-25s выполнялся %2$-7d миллисекунд", description.getMethodName(),TimeUnit.NANOSECONDS.toMicros(nanos)));
-            log.info("{} finished, time taken {} ms", description.getMethodName(), TimeUnit.NANOSECONDS.toMicros(nanos));
+            messages.add(String.format("%1$-24s time taken %2$-3d ms", description.getMethodName(),TimeUnit.NANOSECONDS.toMillis(nanos)));
+            log.info("{} finished, time taken {} ms", description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
         }
     };
 
@@ -107,6 +108,11 @@ public class MealServiceTest {
     @Test
     public void updateNotOwn() throws Exception {
         assertThrows(NotFoundException.class, () -> service.update(meal1, ADMIN_ID));
+    }
+
+    @Test
+    public void updateNotFound() throws Exception {
+        assertThrows(NotFoundException.class, () -> service.update(MealTestData.getNotFound(), ADMIN_ID));
     }
 
     @Test
