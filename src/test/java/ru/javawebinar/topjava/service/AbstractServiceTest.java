@@ -5,6 +5,8 @@ import org.junit.Rule;
 import org.junit.rules.ExternalResource;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -41,4 +43,17 @@ abstract public class AbstractServiceTest {
             }
         });
     }
+
+    @Autowired
+    public Environment environment;
+
+    boolean isJdbc() {
+        for (String ap : environment.getActiveProfiles()) {
+            if (ap.contains("jdbc")) {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
