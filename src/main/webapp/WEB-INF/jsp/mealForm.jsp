@@ -10,12 +10,9 @@
     <hr>
     <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request"/>
     <h2>
-        <c:choose>
-            <c:when test="${meal.id == null}"><spring:message code="mealform.create"/></c:when>
-            <c:otherwise><spring:message code="mealform.edit"/></c:otherwise>
-        </c:choose>
+        <spring:message code="${meal.isNew() ? 'mealform.create' : 'mealform.edit'}"/>
     </h2>
-    <form method="post" action="update">
+    <form method="post" action="${pageContext.request.contextPath}/meals">
         <input type="hidden" name="id" value="${meal.id}">
         <dl>
             <dt><spring:message code="mealform.datetime"/></dt>
@@ -33,5 +30,6 @@
         <button onclick="window.history.back()" type="button"><spring:message code="mealform.cancel"/></button>
     </form>
 </section>
+<jsp:include page="fragments/footer.jsp"/>
 </body>
 </html>
