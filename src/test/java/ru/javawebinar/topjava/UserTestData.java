@@ -5,6 +5,7 @@ import ru.javawebinar.topjava.model.User;
 
 import java.util.Collections;
 import java.util.Date;
+import java.util.Set;
 
 import static ru.javawebinar.topjava.model.AbstractBaseEntity.START_SEQ;
 
@@ -20,6 +21,14 @@ public class UserTestData {
         return new User(null, "New", "new@gmail.com", "newPass", 1555, false, new Date(), Collections.singleton(Role.USER));
     }
 
+    public static User getNewWithRoles() {
+        return new User(null, "NewWithRoles", "newWithRoles@gmail.com", "newWithRolesPass", 1000, false, new Date(), Set.of(Role.ADMIN, Role.USER));
+    }
+
+    public static User getNewWithOutRoles() {
+        return new User(null, "NewWithOutRoles", "newWithOutRoles@gmail.com", "newWithOutRolesPass", 1500, false, new Date(), null);
+    }
+
     public static User getUpdated() {
         User updated = new User(user);
         updated.setEmail("update@gmail.com");
@@ -30,4 +39,16 @@ public class UserTestData {
         updated.setRoles(Collections.singletonList(Role.ADMIN));
         return updated;
     }
+
+    public static User getUpdatedWithDeletedRoles() {
+        User updated = new User(user);
+        updated.setEmail("updateWithDeletedRoles@gmail.com");
+        updated.setName("UpdatedWithDeletedRolesName");
+        updated.setCaloriesPerDay(330);
+        updated.setPassword("newPass");
+        updated.setEnabled(false);
+        updated.setRoles(null);
+        return updated;
+    }
+
 }

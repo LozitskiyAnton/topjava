@@ -18,7 +18,7 @@ import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
 
 
 public abstract class AbstractMealController {
-    private static final Logger log = LoggerFactory.getLogger(AbstractMealController.class);
+    protected final Logger log = LoggerFactory.getLogger(getClass());
 
     private final MealService service;
 
@@ -40,7 +40,7 @@ public abstract class AbstractMealController {
 
     public List<MealTo> getAll() {
         int userId = SecurityUtil.authUserId();
-        log.info("getAll for user {}", userId);
+        log.info("getAll for user {} from {}", userId, this.getClass());
         return MealsUtil.getTos(service.getAll(userId), SecurityUtil.authUserCaloriesPerDay());
     }
 

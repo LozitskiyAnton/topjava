@@ -24,9 +24,11 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Autowired
     protected UserService service;
+
     @Autowired
     @Lazy
     protected JpaUtil jpaUtil;
+
     @Autowired
     private CacheManager cacheManager;
 
@@ -47,6 +49,26 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
         newUser.setId(newId);
         USER_MATCHER.assertMatch(created, newUser);
         USER_MATCHER.assertMatch(service.get(newId), newUser);
+    }
+
+    @Test
+    public void createWithRoles() {
+        User createdWithRoles = service.create(getNewWithRoles());
+        int newId = createdWithRoles.id();
+        User newUserWithRoles = getNewWithRoles();
+        newUserWithRoles.setId(newId);
+        USER_MATCHER.assertMatch(createdWithRoles, newUserWithRoles);
+        USER_MATCHER.assertMatch(service.get(newId), newUserWithRoles);
+    }
+
+    @Test
+    public void createWithOutRoles() {
+        User createdWithOutRoles = service.create(getNewWithOutRoles());
+        int newId = createdWithOutRoles.id();
+        User newUserWithOutRoles = getNewWithOutRoles();
+        newUserWithOutRoles.setId(newId);
+        USER_MATCHER.assertMatch(createdWithOutRoles, newUserWithOutRoles);
+        USER_MATCHER.assertMatch(service.get(newId), newUserWithOutRoles);
     }
 
     @Test
@@ -88,6 +110,13 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
         User updated = getUpdated();
         service.update(updated);
         USER_MATCHER.assertMatch(service.get(USER_ID), getUpdated());
+    }
+
+    @Test
+    public void updateWithDeletedRoles() {
+        User updatedWithDeletedRoles = getUpdatedWithDeletedRoles();
+        service.update(updatedWithDeletedRoles);
+        USER_MATCHER.assertMatch(service.get(USER_ID), getUpdatedWithDeletedRoles());
     }
 
     @Test
