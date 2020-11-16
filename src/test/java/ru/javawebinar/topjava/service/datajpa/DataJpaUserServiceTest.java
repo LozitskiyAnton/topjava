@@ -22,9 +22,19 @@ public class DataJpaUserServiceTest extends AbstractUserServiceTest {
     }
 
     @Test
+    public void getWithMealsIfNoMeals() {
+        User created = service.create(getNew());
+        int newId = created.id();
+        User newUser = service.getWithMeals(newId);
+        User user = UserTestData.getNew();
+        user.setId(newId);
+        USER_MATCHER.assertMatch(newUser, user);
+        MealTestData.MEAL_MATCHER.assertMatch(newUser.getMeals(), user.getMeals());
+    }
+
+    @Test
     public void getWithMealsWithRoles() {
         User user = service.getWithMeals(ADMIN_ID);
-        System.out.println(user.getMeals());
         USER_MATCHER.assertMatch(user, admin);
         MealTestData.MEAL_MATCHER.assertMatch(user.getMeals(), MealTestData.adminMeals);
     }

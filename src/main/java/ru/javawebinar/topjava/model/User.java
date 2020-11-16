@@ -55,7 +55,7 @@ public class User extends AbstractNamedEntity {
     @ElementCollection(fetch = FetchType.EAGER)
 //    @Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 200)
-    private Set<Role> roles;
+    private Set<Role> roles = new HashSet<>();
 
     @Column(name = "calories_per_day", nullable = false, columnDefinition = "int default 2000")
     @Range(min = 10, max = 10000)
@@ -63,7 +63,7 @@ public class User extends AbstractNamedEntity {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")//, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("dateTime DESC")
-    private List<Meal> meals;
+    private List<Meal> meals = new ArrayList<>();
 
     public User() {
     }
