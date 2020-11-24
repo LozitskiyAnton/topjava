@@ -14,8 +14,7 @@ import ru.javawebinar.topjava.web.AbstractControllerTest;
 import ru.javawebinar.topjava.web.SecurityUtil;
 import ru.javawebinar.topjava.web.json.JsonUtil;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -84,16 +83,10 @@ class MealRestControllerTest extends AbstractControllerTest {
     @Test
     void getBetween() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "filter")
-                .param("startDate", "2011-12-03T10:15:30")
-                .param("endDate", "2012-12-03T10:15:30"))
+                .param("startDate", "2020-01-31T09:15:30")
+                .param("endDate", "2020-01-31T20:15:30"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(MEALTO_MATCHER.contentJson(MealsUtil
-                        .getFilteredTos(mealService.getBetweenInclusive(LocalDate.parse("2011-12-03")
-                                , LocalDate.parse("2012-12-03")
-                                , SecurityUtil.authUserId())
-                                , SecurityUtil.authUserCaloriesPerDay()
-                                , LocalTime.parse("10:15:30")
-                                , LocalTime.parse("10:15:30"))));
+                .andExpect(MEALTO_MATCHER.contentJson(MealsUtil.getTos(List.of(meal7, meal6, meal5), SecurityUtil.authUserCaloriesPerDay())));
     }
 }
