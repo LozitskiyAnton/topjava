@@ -2,9 +2,10 @@ var form;
 
 function makeEditable() {
     form = $('#detailsForm');
+
     $(".delete").click(function () {
         if (confirm('Are you sure?')) {
-            deleteRow($(this).attr("id"));
+            deleteRow($(".tr").attr("id"));
         }
     });
 
