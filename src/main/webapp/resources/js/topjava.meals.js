@@ -30,7 +30,7 @@ $(function () {
             "order": [
                 [
                     0,
-                    "asc"
+                    "desc"
                 ]
             ]
         })
@@ -43,7 +43,8 @@ function getFilter() {
         url: ctx.ajaxUrl + "filter/?" + $('#filterForm').serialize(),
         type: "GET"
     }).done(function (data) {
-        ctx.datatableApi.clear().rows.add(data).draw();
+        clearAndAddData(data)
+        filter =  "filter/?" + $('#filterForm').serialize();
         successNoty("Filtered");
     });
 }

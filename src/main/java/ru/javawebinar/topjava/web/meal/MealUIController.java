@@ -16,7 +16,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/profile/meals")
 public class MealUIController extends AbstractMealController {
-    static final String REST_URL = "/profile/meals";
 
     @Override
     @GetMapping("/{id}")
@@ -32,16 +31,9 @@ public class MealUIController extends AbstractMealController {
     }
 
     @Override
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<MealTo> getAll() {
         return super.getAll();
-    }
-
-    @Override
-    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseStatus(value = HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Meal meal, @PathVariable int id) {
-        super.update(meal, id);
     }
 
     @PostMapping
@@ -51,7 +43,6 @@ public class MealUIController extends AbstractMealController {
                        @RequestParam Integer calories) {
         super.create(new Meal(null, dateTime, description, calories));
     }
-
 
     @Override
     @GetMapping(value = "/filter", produces = MediaType.APPLICATION_JSON_VALUE)

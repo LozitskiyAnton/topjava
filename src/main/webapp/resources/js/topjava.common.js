@@ -5,7 +5,7 @@ function makeEditable() {
 
     $(".delete").click(function () {
         if (confirm('Are you sure?')) {
-            deleteRow($(".tr").attr("id"));
+            deleteRow($(this).parents("tr").attr("id"));
         }
     });
 
@@ -22,20 +22,26 @@ function add() {
     $("#editRow").modal();
 }
 
+var filter="";
+
 function deleteRow(id) {
     $.ajax({
         url: ctx.ajaxUrl + id,
         type: "DELETE"
     }).done(function () {
-        updateTable();
+        updateTable(filter);
         successNoty("Deleted");
     });
 }
 
-function updateTable() {
-    $.get(ctx.ajaxUrl, function (data) {
-        ctx.datatableApi.clear().rows.add(data).draw();
+function updateTable(filter) {
+    $.get(ctx.ajaxUrl + filter, function (data) {
+        clearAndAddData(data);
     });
+}
+
+function clearAndAddData(data){
+    ctx.datatableApi.clear().rows.add(data).draw();
 }
 
 function save() {
@@ -45,7 +51,7 @@ function save() {
         data: form.serialize()
     }).done(function () {
         $("#editRow").modal("hide");
-        updateTable();
+        updateTable(filter);
         successNoty("Saved");
     });
 }
