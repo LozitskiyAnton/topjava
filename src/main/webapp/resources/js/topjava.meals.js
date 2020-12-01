@@ -48,3 +48,7 @@ function getFilter() {
         successNoty("Filtered");
     });
 }
+
+function clearForm() {
+    $('#filterForm').find("input, textarea").val("");
+}

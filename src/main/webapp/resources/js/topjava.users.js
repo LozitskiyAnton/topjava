@@ -43,3 +43,15 @@ $(function () {
     };
     makeEditable();
 });
+
+function enable(id, checkbox) {
+    var enabled = checkbox.is(":checked");
+    $.ajax({
+        type: "POST",
+        url: ctx.ajaxUrl + id,
+        data: "enabled=" + enabled
+    }).done(function () {
+        updateTable(filter);
+        successNoty("Enabled");
+    });
+}
