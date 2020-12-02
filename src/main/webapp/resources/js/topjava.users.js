@@ -51,7 +51,15 @@ function enable(id, checkbox) {
         url: ctx.ajaxUrl + id,
         data: "enabled=" + enabled
     }).done(function () {
-        updateTable(filter);
-        successNoty("Enabled");
+        checkbox.closest("tr").attr("data-userEnabled", enabled);
+        successNoty(enabled ? "Enabled" : "Disabled");
+    }).fail(function () {
+        $(checkbox).prop("checked", !enabled);
+    });
+}
+
+function updateTable() {
+    $.get(ctx.ajaxUrl, function (data) {
+        clearAndAddData(data);
     });
 }

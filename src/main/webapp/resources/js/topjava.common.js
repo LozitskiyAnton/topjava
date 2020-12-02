@@ -22,21 +22,13 @@ function add() {
     $("#editRow").modal();
 }
 
-var filter="";
-
 function deleteRow(id) {
     $.ajax({
         url: ctx.ajaxUrl + id,
         type: "DELETE"
     }).done(function () {
-        updateTable(filter);
+        updateTable();
         successNoty("Deleted");
-    });
-}
-
-function updateTable(filter) {
-    $.get(ctx.ajaxUrl + filter, function (data) {
-        clearAndAddData(data);
     });
 }
 
@@ -51,7 +43,7 @@ function save() {
         data: form.serialize()
     }).done(function () {
         $("#editRow").modal("hide");
-        updateTable(filter);
+        updateTable();
         successNoty("Saved");
     });
 }

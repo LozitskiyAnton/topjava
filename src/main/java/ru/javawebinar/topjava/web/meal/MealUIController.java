@@ -18,12 +18,6 @@ import java.util.List;
 public class MealUIController extends AbstractMealController {
 
     @Override
-    @GetMapping("/{id}")
-    public Meal get(@PathVariable int id) {
-        return super.get(id);
-    }
-
-    @Override
     @DeleteMapping("/{id}")
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {

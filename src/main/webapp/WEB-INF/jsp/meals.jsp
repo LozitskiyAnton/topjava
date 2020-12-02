@@ -32,7 +32,7 @@
             </dl>
             <button type="button" class="btn btn-primary" onclick="getFilter()"><spring:message
                     code="meal.filter"/></button>
-            <button class="btn btn-primary" onclick="clearForm()">
+            <button type="reset" class="btn btn-primary">
                 <span class="fa fa-close"></span>
                 <spring:message code="common.cancel"/>
             </button>
@@ -98,7 +98,7 @@
 
                     <div class="form-group">
                         <label for="calories" class="col-form-label"><spring:message code="meal.calories"/></label>
-                        <input type="text" class="form-control" id="calories" name="calories"
+                        <input type="number" class="form-control" id="calories" name="calories"
                                placeholder="<spring:message code="meal.calories"/>">
                     </div>
                 </form>

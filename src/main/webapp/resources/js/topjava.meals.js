@@ -38,17 +38,21 @@ $(function () {
     makeEditable();
 });
 
+var filter="";
+
 function getFilter() {
     $.ajax({
         url: ctx.ajaxUrl + "filter/?" + $('#filterForm').serialize(),
         type: "GET"
     }).done(function (data) {
         clearAndAddData(data)
-        filter =  "filter/?" + $('#filterForm').serialize();
-        successNoty("Filtered");
+        filter = "filter/?" + $('#filterForm').serialize();
     });
 }
 
-function clearForm() {
-    $('#filterForm').find("input, textarea").val("");
+function updateTable() {
+    $.get(ctx.ajaxUrl + filter, function (data) {
+        clearAndAddData(data);
+    });
 }
+
