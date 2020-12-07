@@ -3,14 +3,14 @@ var ctx, mealAjaxUrl = "profile/meals/";
 function updateFilteredTable() {
     $.ajax({
         type: "GET",
-        url: "profile/meals/filter",
+        url: mealAjaxUrl + "filter",
         data: $("#filter").serialize()
     }).done(updateTableByData);
 }
 
 function clearFilter() {
     $("#filter")[0].reset();
-    $.get("profile/meals/", updateTableByData);
+    $.get(mealAjaxUrl, updateTableByData);
 }
 
 $(function () {
@@ -28,7 +28,7 @@ $(function () {
                     "data": "dateTime",
                     "render": function (data, type, row) {
                         if (type === "display") {
-                            return moment(data).format('YYYY-MM-DD HH:MM');
+                            return data.replace('T', ' ').substring(0, 16);
                         }
                         return data;
                     }
@@ -57,11 +57,7 @@ $(function () {
                 ]
             ],
             "createdRow": function (row, data, dataIndex) {
-                if (!data.excess) {
-                    $(row).attr("data-mealExcess", false);
-                } else {
-                    $(row).attr("data-mealExcess", true);
-                }
+                $(row).attr("data-mealExcess", data.excess);
             }
         }),
         updateTable: updateFilteredTable

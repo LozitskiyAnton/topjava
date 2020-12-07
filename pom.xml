@@ -268,11 +268,6 @@
             <artifactId>noty</artifactId>
             <version>${webjars-noty.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.webjars</groupId>
-            <artifactId>momentjs</artifactId>
-            <version>2.24.0</version>
-        </dependency>
 
         <!--JSON-->
         <dependency>
